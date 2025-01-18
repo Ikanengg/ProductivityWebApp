@@ -1,159 +1,172 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Sign Up Page</title>
-    <style>
-      body {
-        font-family: Arial, sans-serif;
-        margin: 0;
-        padding: 0;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        background-color: #ff6767;
-      }
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js" crossorigin="anonymous"></script>
+  <title>Sign Up Form</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background-color: #f05454;
+      background-image: url('img/back.png'); /* Replace with an appropriate background image */
+      background-size: cover;
+    }
 
-      .container {
-        display: flex;
-        width: 80%;
-        background: #fff;
-        border-radius: 10px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        overflow: hidden;
-        height: 90%;
-      }
+    .container {
+      background-color: white;
+      width: 80%;
+      max-width: 900px;
+      display: flex;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    }
 
-      .image-section {
-        flex: 1;
-        background-image: url(img/istockimg.png);
-        background-size: cover;
-        background-position: center;
-        background-repeat: no-repeat;
-      }
+    .illustration {
+      flex: 1;
+      background-color: #ffe6e6;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
 
-      .form-section {
-        flex: 1;
-        padding: 40px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-      }
+    .illustration img {
+      max-width: 100%;
+      height: auto;
+    }
 
-      .form-section h2 {
-        margin-bottom: 20px;
-        color: #333;
-        padding-top: 10px;
-      }
+    .form-section {
+      flex: 1;
+      padding: 40px 30px;
+    }
 
-      .form-group {
-        margin-bottom: 15px;
-      }
+    .form-section h2 {
+      margin-bottom: 20px;
+      font-size: 24px;
+      color: #333;
+    }
 
-      .form-group label {
-        display: block;
-        margin-bottom: 5px;
-        font-weight: bold;
-        color: #555;
-      }
+    .form-section form {
+      display: flex;
+      flex-direction: column;
+    }
 
-      .form-group input {
-        width: 100%;
-        padding: 10px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        font-size: 16px;
-      }
+    .form-section form .input-field {
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      padding: 10px;
+    }
 
-      .form-group input:focus {
-        outline: none;
-        border-color: #007bff;
-        box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
-      }
+    .form-section form .input-field i {
+      margin-right: 10px;
+      color: #888;
+    }
 
-      .checkbox {
-        display: flex;
-        align-items: center;
-        margin-bottom: 20px;
-      }
+    .form-section form input {
+      border: none;
+      outline: none;
+      flex: 1;
+      font-size: 16px;
+    }
 
-      .checkbox input {
-        margin-right: 10px;
-      }
+    .form-section form input::placeholder {
+      color: #aaa;
+    }
 
-      .register-btn {
-        padding: 10px 15px;
-        background-color: #ff6767;
-        color: #fff;
-        border: none;
-        border-radius: 5px;
-        font-size: 16px;
-        cursor: pointer;
-      }
+    .form-section form .terms {
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+    }
 
-      .register-btn:hover {
-        background-color: #ed3838;
-      }
-      .signin-link {
-        padding-bottom: 15px;
-        text-align: center;
-        font-size: 14px;
-      }
-    </style>
-  </head>
-  <body>
-    <div class="container">
-      <div class="image-section"></div>
-      <div class="form-section">
-        <h2>Sign Up</h2>
-        <form>
-          <div class="form-group">
-            <label for="first-name">Enter First Name</label>
-            <input type="text" id="first-name" name="first-name" required />
-          </div>
-          <div class="form-group">
-            <label for="last-name">Enter Last Name</label>
-            <input type="text" id="last-name" name="last-name" required />
-          </div>
-          <div class="form-group">
-            <label for="username">Enter Username</label>
-            <input type="text" id="username" name="username" required />
-          </div>
-          <div class="form-group">
-            <label for="email">Enter Email</label>
-            <input type="email" id="email" name="email" required />
-          </div>
-          <div class="form-group">
-            <label for="password">Enter Password</label>
-            <input type="password" id="password" name="password" required />
-          </div>
-          <div class="form-group">
-            <label for="confirm-password">Confirm Password</label>
-            <input
-              type="password"
-              id="confirm-password"
-              name="confirm-password"
-              required
-            />
-          </div>
-          <div class="checkbox">
-            <input type="checkbox" id="terms" name="terms" required />
-            <label for="terms">I agree to all terms</label>
-          </div>
-          <button
-            type="submit"
-            class="register-btn"
-            formaction="dashboard.html"
-          >
-            Register
-          </button>
-          <p class="signin-link">
-            Already have an account? <a href="signin.html">Sign in</a>
-          </p>
-        </form>
-      </div>
+    .form-section form .terms input {
+      margin-right: 10px;
+    }
+
+    .form-section form .register-btn {
+      background-color: #f05454;
+      color: white;
+      padding: 10px 15px;
+      font-size: 16px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .form-section form .register-btn:hover {
+      background-color: #d94343;
+    }
+
+    .form-section form .signin {
+      text-align: center;
+      margin-top: 10px;
+      font-size: 14px;
+    }
+
+    .form-section form .signin a {
+      color: #f05454;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .form-section form .signin a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="illustration">
+      <img src="img/sign.png" alt="Illustration">
     </div>
-  </body>
+    <div class="form-section">
+      <h2>Sign Up</h2>
+      <form>
+        <div class="input-field">
+          <i class="fas fa-user"></i>
+          <input type="text" placeholder="  Enter First Name" required>
+        </div>
+        <div class="input-field">
+          <i class="fas fa-user"></i>
+          <input type="text" placeholder="  Enter Last Name" required>
+        </div>
+        <div class="input-field">
+          <i class="fas fa-user-circle"></i>
+          <input type="text" placeholder="  Enter Username" required>
+        </div>
+        <div class="input-field">
+          <i class="fas fa-envelope"></i>
+          <input type="email" placeholder="  Enter Email" required>
+        </div>
+        <div class="input-field">
+          <i class="fas fa-lock"></i>
+          <input type="password" placeholder="  Enter Password" required>
+        </div>
+        <div class="input-field">
+          <i class="fas fa-lock"></i>
+          <input type="password" placeholder="  Confirm Password" required>
+        </div>
+        <div class="terms">
+          <input type="checkbox" required>
+          <label>I agree to all terms</label>
+        </div>
+        <button type="submit" class="register-btn">Register</button>
+        <div class="signin">
+          Already have an account? <a href="#">Sign In</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</body>
 </html>
