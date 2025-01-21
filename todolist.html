@@ -8,12 +8,40 @@
   </head>
   <body>
     <div class="container">
-      <h1>To-Do List</h1>
-      <div class="input-container">
-        <input type="text" id="taskInput" placeholder="Enter a task" />
-        <button id="addTaskButton">Add Task</button>
+       <div class="sidebar">
+        <div class="user-info">
+        <img src="avatar.jpg" alt="User Avatar" class="user-avatar" />
+        <h3>User Name</h3>
+        <p>useremail@example.com</p>
+        </div>
+        <ul class="menu-list">
+        <li class="menu-item active"><i class="fas fa-tachometer-alt"></i> Dashboard</li>
+        <li class="menu-item"><i class="fa fa-pencil" aria-hidden="true"></i> My Task</li>
+        <li class="menu-item"><i class="fa fa-list-ul" aria-hidden="true"></i> Task Categories</li>
+        <li class="menu-item"><i class="fas fa-cogs"></i> Settings</li>
+        <li class="menu-item"><i class="fa fa-question-circle" aria-hidden="true"></i> Help</li>
+        </ul>
+    </div>
+  
+      <!-- Main Content -->
+      <div class="main-content">
+        <h1>To-Do List</h1>
+        <div class="input-container">
+          <input type="text" id="taskInput" placeholder="Enter a task" />
+          <select id="categorySelect">
+            <option value="Not Started" selected>Not Started</option>
+            <option value="In Progress">In Progress</option>
+            <option value="Completed">Completed</option>
+          </select>
+          <select id="prioritySelect">
+            <option value="High" selected>High</option>
+            <option value="Medium">Medium</option>
+            <option value="Low">Low</option>
+          </select>
+          <button id="addTaskButton">Add Task</button>
+        </div>
+        <ul id="taskList"></ul>
       </div>
-      <ul id="taskList"></ul>
     </div>
     <script src="todolist.js"></script>
   </body>

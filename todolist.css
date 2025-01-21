@@ -1,91 +1,178 @@
+/* General Body Styles */
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    margin: 0;
-    padding: 0;
-  }
-  
-  .container {
-    max-width: 600px;
-    margin: 50px auto;
-    background: white;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-  
-  h1 {
-    text-align: center;
-    color: #333;
-  }
-  
-  .input-container {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 20px;
-  }
-  
-  #taskInput {
-    flex: 1;
-    padding: 10px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    margin-right: 10px;
-  }
-  
-  #addTaskButton {
-    padding: 10px 20px;
-    background-color: pink;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-  
-  #addTaskButton:hover {
-    background-color: palevioletred;
-  }
-  
-  #taskList {
-    list-style-type: none;
-    padding: 0;
-  }
-  
-  .task-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    margin-bottom: 10px;
-    background: #f9f9f9;
-  }
-  
-  .task-item button {
-    margin-left: 10px;
-    padding: 5px 10px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-  
-  .edit-button {
-    background-color: #FFC107;
-    color: white;
-  }
-  
-  .edit-button:hover {
-    background-color: #e0a800;
-  }
-  
-  .delete-button {
-    background-color: #DC3545;
-    color: white;
-  }
-  
-  .delete-button:hover {
-    background-color: #c82333;
-  }
-  
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  height: 100vh;
+  width: 100%;
+  overflow: hidden; /* Prevents overflow caused by fixed sidebar */
+}
+
+/* Container that holds both sidebar and main content */
+.container {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  margin-left: 250px; /* Ensures the content has space on the left side for the fixed sidebar */
+}
+
+/* Sidebar Styling */
+.sidebar {
+  width: 250px;
+  background: #ff6b6b;
+  padding: 2rem;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: fixed; /* Sidebar remains fixed on the left */
+  height: 100%; /* Full height */
+  top: 0;
+  left: 0;
+  box-shadow: 2px 0px 10px rgba(0, 0, 0, 0.1); /* Add shadow for a subtle 3D effect */
+}
+
+/* User Info Section in Sidebar */
+.user-info {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.user-avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  margin-bottom: 1rem;
+}
+
+.user-info h3 {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.user-info p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* Menu Items in Sidebar */
+.menu-list {
+  list-style: none;
+  padding: 0;
+  width: 100%;
+}
+
+.menu-item {
+  padding: 0.75rem 1rem;
+  margin-bottom: 0.5rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s, color 0.3s;
+  display: flex;
+  align-items: center;
+}
+
+.menu-item:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.menu-item.active {
+  background: white;
+  color: #ff6b6b;
+}
+
+.menu-item i {
+  margin-right: 10px;
+  font-size: 1.2rem;
+}
+
+/* Main Content Styling */
+.main-content {
+  margin-left: 60px; /* Ensures content doesn't overlap sidebar */
+  padding: 2rem;
+  background-color: #f8f9fa;
+  overflow-y: auto;
+  flex-grow: 1; /* Ensures the content section takes up remaining space */
+  box-sizing: border-box; /* Makes sure padding is included in width calculation */
+}
+
+/* Title and Input Styling */
+h1 {
+  text-align: center;
+  color: #333;
+}
+
+.input-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+#taskInput {
+  flex: 1;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-right: 10px;
+}
+
+#addTaskButton {
+  padding: 10px 20px;
+  background-color: pink;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+#addTaskButton:hover {
+  background-color: palevioletred;
+}
+
+#taskList {
+  list-style-type: none;
+  padding: 0;
+}
+
+.task-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-bottom: 10px;
+  background: #f9f9f9;
+}
+
+.task-item button {
+  margin-left: 10px;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.edit-button {
+  background-color: #ffc107;
+  color: white;
+}
+
+.edit-button:hover {
+  background-color: #e0a800;
+}
+
+.delete-button {
+  background-color: #dc3545;
+  color: white;
+}
+
+.delete-button:hover {
+  background-color: #c82333;
+}
