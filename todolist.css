@@ -15,7 +15,6 @@ body {
   display: flex;
   width: 100%;
   height: 100%;
-  margin-left: 250px; /* Ensures the content has space on the left side for the fixed sidebar */
 }
 
 /* Sidebar Styling */
@@ -92,7 +91,7 @@ body {
 
 /* Main Content Styling */
 .main-content {
-  margin-left: 60px; /* Ensures content doesn't overlap sidebar */
+  margin-left: 300px; /* Matches the width of the sidebar */
   padding: 2rem;
   background-color: #f8f9fa;
   overflow-y: auto;
