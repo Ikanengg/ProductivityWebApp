@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Dashboard</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            background: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .logo span {
+            color: #ff6b6b;
+        }
+
+        .search-container {
+            flex: 1;
+            margin: 0 2rem;
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            outline: none;
+        }
+
+        .right-icons {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .icon-btn {
+            background: #ffe3e3;
+            border: none;
+            padding: 0.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            color: #ff6b6b;
+        }
+
+        /* Main container with sidebar */
+        .main-container {
+            display: flex;
+            min-height: calc(100vh - 70px);
+        }
+
+        .sidebar {
+            width: 250px;
+            background: #ff6b6b;
+            padding: 2rem;
+            color: white;
+        }
+
+        .user-info {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .user-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            margin-bottom: 1rem;
+        }
+
+        .menu-list {
+            list-style: none;
+        }
+
+        .menu-item {
+            padding: 0.75rem 1rem;
+            margin-bottom: 0.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .menu-item:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        .menu-item.active {
+            background: white;
+            color: #ff6b6b;
+        }
+
+        /* Content area */
+        .content {
+            flex: 1;
+            padding: 2rem;
+        }
+
+        .welcome-header {
+            margin-bottom: 2rem;
+        }
+
+        .welcome-header h1 {
+            font-size: 24px;
+            color: #333;
+        }
+
+        /* Task sections styling */
+        .tasks-container {
+            display: grid;
+            grid-template-columns: 7fr 3fr;
+            gap: 2rem;
+        }
+
+        .task-section {
+            background: white;
+            border-radius: 16px;
+            padding: 1.5rem;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            gap: 8px;
+        }
+
+        .section-header h2 {
+            font-size: 16px;
+            color: #333;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .add-task {
+            margin-left: auto;
+            color: #666;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .date-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 1rem;
+        }
+
+        /* Task card styles */
+        .task-card {
+            border: 1px solid #eee;
+            border-radius: 12px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            position: relative;
+        }
+
+        .task-card h3 {
+            font-size: 16px;
+            color: #333;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .task-card p {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 12px;
+            padding-right: 90px;
+        }
+
+        .task-meta {
+            display: flex;
+            gap: 1rem;
+            font-size: 12px;
+            color: #666;
+        }
+
+        .menu-dots {
+            position: absolute;
+            right: 1rem;
+            top: 1rem;
+            cursor: pointer;
+            color: #666;
+        }
+
+        .task-image {
+            position: absolute;
+            right: 1rem;
+            top: 2.5rem;
+            width: 80px;
+            height: 60px;
+            border-radius: 8px;
+            object-fit: cover;
+        }
+
+        /* Status colors */
+        .priority-moderate { color: #0099ff; }
+        .status-not-started { color: #ff4444; }
+        .status-in-progress { color: #0099ff; }
+        .status-completed { color: #00cc44; }
+
+        /* Progress circle styles */
+        .progress-circles {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 16px;
+        }
+
+        .circle-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+        }
+
+        .progress-item {
+            text-align: center;
+        }
+
+        .progress-circle {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 0.5rem;
+            position: relative;
+            background: #eee;
+        }
+
+        .progress-circle::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+        }
+
+        .completed-circle::before {
+            background: conic-gradient(#4CAF50 0% 84%, #eee 84% 100%); /* Green for Completed */
+        }
+
+        .in-progress-circle::before {
+            background: conic-gradient(#2196F3 0% 46%, #eee 46% 100%);
+        }
+
+        .not-started-circle::before {
+            background: conic-gradient(#ff6b6b 0% 13%, #eee 13% 100%);
+        }
+
+
+        .progress-value {
+            position: relative;
+            z-index: 1;
+            font-size: 18px;
+            font-weight: bold;
+            background: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .progress-label {
+            font-size: 14px;
+            color: #666;
+            margin-top: 0.5rem;
+        }
+
+        
+
+        /* Completed tasks section */
+        .completed-task-card {
+            border: 1px solid #eee;
+            border-radius: 12px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .completed-task-content {
+            flex: 1;
+        }
+
+        .completed-task-image {
+            width: 60px;
+            height: 60px;
+            border-radius: 8px;
+            object-fit: cover;
+            margin-left: 1rem;
+        }
+
+        .completed-time {
+            color: #666;
+            font-size: 12px;
+            margin-top: 4px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <span>Dash</span>board
+        </div>
+        <div class="search-container">
+            <input type="text" class="search-input" placeholder="Search your task here...">
+        </div>
+        <div class="right-icons">
+            <button class="icon-btn"><i class="fas fa-bell"></i></button>
+            <button class="icon-btn"><i class="fas fa-calendar-alt"></i></button>
+            <span>Tuesday 20/06/2023</span>
+        </div>
+    </nav>
+
+    <div class="main-container">
+        <aside class="sidebar">
+            <div class="user-info">
+                <img src="/api/placeholder/80/80" alt="User Avatar" class="user-avatar">
+                <h3>Sundar Gurung</h3>
+                <p>sundargurung360@gmail.com</p>
+            </div>
+            <ul class="menu-list">
+                <li class="menu-item active"><i class="fas fa-tachometer-alt"></i> Dashboard</li>
+                <li class="menu-item"><i class="fa fa-pencil" aria-hidden="true"></i>
+                    My Task</li>
+                <li class="menu-item"><i class="fa fa-list-ul" aria-hidden="true"></i>
+                    Task Categories</li>
+                <li class="menu-item"><i class="fas fa-cogs"></i> Settings</li>
+                <li class="menu-item"><i class="fa fa-question-circle" aria-hidden="true"></i> Help</li>
+            </ul>
+        </aside>
+
+        <main class="content">
+            <div class="welcome-header">
+                <h1>Welcome back, Sundar 👋</h1>
+            </div>
+
+            <div class="tasks-container">
+                <div class="task-section">
+                    <div class="section-header">
+                        <h2><i class="fas fa-tasks"></i> To-Do</h2>
+                        <div class="add-task">+ Add task</div>
+                    </div>
+                    
+                    <div class="date-header">
+                        <span>20 June</span>
+                        <span>• Today</span>
+                    </div>
+
+                    <div class="task-card">
+                        <div class="menu-dots">•••</div>
+                        <h3>○ Attend Nischal's Birthday Party</h3>
+                        <p>Buy gifts on the way and pick up cake from the bakery. (6 PM | Fresh Elements).....</p>
+                        <div class="task-meta">
+                            <span>Priority: <span class="priority-moderate">Moderate</span></span>
+                            <span>Status: <span class="status-not-started">Not Started</span></span>
+                            <span>Created on: 20/06/2023</span>
+                        </div>
+                        <img src="/api/placeholder/80/60" alt="Task image" class="task-image">
+                    </div>
+
+                    <div class="task-card">
+                        <div class="menu-dots">•••</div>
+                        <h3>○ Landing Page Design for TravelDays</h3>
+                        <p>Get the work done by EOD and discuss with client before leaving. (4 PM | Meeting Room)</p>
+                        <div class="task-meta">
+                            <span>Priority: <span class="priority-moderate">Moderate</span></span>
+                            <span>Status: <span class="status-in-progress">In Progress</span></span>
+                            <span>Created on: 20/06/2023</span>
+                        </div>
+                        <img src="/api/placeholder/80/60" alt="Task image" class="task-image">
+                    </div>
+                </div>
+
+                <div class="progress-circles">
+                    <h2>📋 Task Status</h2>
+                    <div class="circle-container">
+                        <div class="progress-item">
+                            <div class="progress-circle completed-circle">
+                                <div class="progress-value">84%</div>
+                            </div>
+                            <div class="progress-label">Completed</div>
+                        </div>
+                        <div class="progress-item">
+                            <div class="progress-circle in-progress-circle">
+                                <div class="progress-value">46%</div>
+                            </div>
+                            <div class="progress-label">In Progress</div>
+                        </div>
+                        <div class="progress-item">
+                            <div class="progress-circle not-started-circle">
+                                <div class="progress-value">13%</div>
+                            </div>
+                            <div class="progress-label">Not Started</div>
+                        </div>
+                    </div>
+                
+
+                    <div style="margin-top: 2rem">
+                        <h2>📋 Completed Task</h2>
+                        <div style="margin-top: 1rem">
+                            <div class="completed-task-card">
+                                <div class="completed-task-content">
+                                    <h3>○ Walk the dog</h3>
+                                    <p>Take the dog to the park and bring treats as well.</p>
+                                    <div class="task-meta">
+                                        <span>Status: <span class="status-completed">Completed</span></span>
+                                    </div>
+                                    <div class="completed-time">Completed 2 days ago.</div>
+                                </div>
+                                <img src="/api/placeholder/60/60" alt="Completed task image" class="completed-task-image">
+                            </div>
+
+                            <div class="completed-task-card">
+                                <div class="completed-task-content">
+                                    <h3>○ Conduct meeting</h3>
+                                    <p>Meet with the client and finalize requirements.</p>
+                                    <div class="task-meta">
+                                        <span>Status: <span class="status-completed">Completed</span></span>
+                                    </div>
+                                    <div class="completed-time">Completed 2 days ago.</div>
+                                </div>
+                                <img src="/api/placeholder/60/60" alt="Completed task image" class="completed-task-image">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        document.querySelectorAll('.menu-item').forEach(item => {
+            item.addEventListener('click', () => {
+                document.querySelector('.menu-item.active').classList.remove('active');
+                item.classList.add('active');
+            });
+        });
+
+        const searchInput = document.querySelector('.search-input');
+        searchInput.addEventListener('input', (e) => {
+            const searchTerm = e.target.value.toLowerCase();
+            // Add search logic here
+        });
+    </script>
+</body>
+</html>
