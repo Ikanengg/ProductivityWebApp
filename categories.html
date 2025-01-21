@@ -162,61 +162,76 @@
 
     <!-- Inline JavaScript -->
     <script>
-      // Simulate shared state
-      const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
-
-      // Render categories
-      function renderCategories() {
-        const categoriesContainer = document.getElementById("categories");
-        categoriesContainer.innerHTML = "";
-
-        const categories = ["Not Started", "In Progress", "Completed"];
-        categories.forEach((category) => {
-          const categorySection = document.createElement("div");
-          categorySection.className = "category-section";
-
-          const categoryTitle = document.createElement("h2");
-          categoryTitle.textContent = category;
-
-          const taskList = document.createElement("ul");
-
-          tasks
-            .filter((task) => task.category === category)
-            .forEach((task) => {
-              const listItem = document.createElement("li");
-              listItem.className = "task-item";
-
-              const taskContent = document.createElement("span");
-              taskContent.textContent = `${task.name} - ${task.priority}`;
-
-              const moveSelect = document.createElement("select");
-              categories.forEach((cat) => {
-                const option = document.createElement("option");
-                option.value = cat;
-                option.textContent = cat;
-                if (cat === task.category) option.selected = true;
-                moveSelect.appendChild(option);
-              });
-
-              moveSelect.addEventListener("change", (e) => {
-                task.category = e.target.value;
-                localStorage.setItem("tasks", JSON.stringify(tasks));
-                renderCategories();
-              });
-
-              listItem.appendChild(taskContent);
-              listItem.appendChild(moveSelect);
-              taskList.appendChild(listItem);
+      // Load tasks from localStorage
+        function loadTasks() {
+            return JSON.parse(localStorage.getItem("tasks")) || [];
+        }
+        
+        // Render categories
+        function renderCategories() {
+            const categoriesContainer = document.getElementById("categories");
+            categoriesContainer.innerHTML = "";
+        
+            const categories = ["Not Started", "In Progress", "Completed"];
+            const tasks = loadTasks(); // Get tasks from localStorage
+        
+            categories.forEach((category) => {
+            const categorySection = document.createElement("div");
+            categorySection.className = "category-section";
+        
+            const categoryTitle = document.createElement("h2");
+            categoryTitle.textContent = category;
+        
+            const taskList = document.createElement("ul");
+        
+            // Filter tasks based on the current category
+            tasks
+                .filter((task) => task.category === category)
+                .forEach((task) => {
+                const listItem = document.createElement("li");
+                listItem.className = "task-item";
+        
+                const taskContent = document.createElement("span");
+                taskContent.textContent = `${task.name} - ${task.priority}`;
+        
+                const moveSelect = document.createElement("select");
+                categories.forEach((cat) => {
+                    const option = document.createElement("option");
+                    option.value = cat;
+                    option.textContent = cat;
+                    if (cat === task.category) option.selected = true;
+                    moveSelect.appendChild(option);
+                });
+        
+                // Change task category on select change
+                moveSelect.addEventListener("change", (e) => {
+                    const updatedTasks = tasks.map((t) => {
+                    if (t.id === task.id) {
+                        t.category = e.target.value; // Update category of the selected task
+                    }
+                    return t;
+                    });
+        
+                    // Save updated tasks back to localStorage
+                    localStorage.setItem("tasks", JSON.stringify(updatedTasks));
+        
+                    renderCategories(); // Re-render categories after update
+                });
+        
+                listItem.appendChild(taskContent);
+                listItem.appendChild(moveSelect);
+                taskList.appendChild(listItem);
+                });
+        
+            categorySection.appendChild(categoryTitle);
+            categorySection.appendChild(taskList);
+            categoriesContainer.appendChild(categorySection);
             });
-
-          categorySection.appendChild(categoryTitle);
-          categorySection.appendChild(taskList);
-          categoriesContainer.appendChild(categorySection);
-        });
-      }
-
-      // Initial render
-      renderCategories();
+        }
+        
+        // Initial render when the page is loaded
+        window.addEventListener("load", renderCategories);
+        
     </script>
   </body>
 </html>

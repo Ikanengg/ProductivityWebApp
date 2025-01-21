@@ -4,8 +4,23 @@ const prioritySelect = document.getElementById("prioritySelect");
 const addTaskButton = document.getElementById("addTaskButton");
 const taskList = document.getElementById("taskList");
 
-// Shared task state (in-memory)
-const tasks = [];
+// Load tasks from localStorage or initialize with empty array
+function loadTasks() {
+  let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+
+  // If no tasks exist, add default tasks
+  if (tasks.length === 0) {
+    const defaultTasks = [
+      { id: Date.now(), name: "Complete the project report", category: "Completed", priority: "High" },
+      { id: Date.now() + 1, name: "Start a new design mockup", category: "In Progress", priority: "Medium" }
+    ];
+    // Save default tasks to localStorage
+    localStorage.setItem("tasks", JSON.stringify(defaultTasks));
+    tasks = defaultTasks; // Set tasks to default ones
+  }
+
+  renderTasks(tasks); // Render the tasks
+}
 
 // Event listener for adding a task
 addTaskButton.addEventListener("click", addTask);
@@ -28,18 +43,24 @@ function addTask() {
     priority,
   };
 
-  // Add task to the shared state
+  // Get tasks from localStorage, or initialize an empty array
+  const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+
+  // Add task to the tasks array
   tasks.push(task);
 
+  // Save updated tasks array to localStorage
+  localStorage.setItem("tasks", JSON.stringify(tasks));
+
   // Render the updated task list
-  renderTasks();
+  renderTasks(tasks);
 
   // Clear the input field
   taskInput.value = "";
 }
 
 // Render tasks in the to-do list
-function renderTasks() {
+function renderTasks(tasks) {
   taskList.innerHTML = ""; // Clear existing tasks
 
   tasks.forEach((task) => {
@@ -61,10 +82,18 @@ function renderTasks() {
     deleteButton.textContent = "Delete";
     deleteButton.className = "delete-button";
     deleteButton.addEventListener("click", () => {
-      // Remove task from the shared state
+      // Get tasks from localStorage
+      const tasks = JSON.parse(localStorage.getItem("tasks"));
+
+      // Remove the task from the tasks array
       const index = tasks.findIndex((t) => t.id === task.id);
       tasks.splice(index, 1);
-      renderTasks();
+
+      // Save the updated tasks back to localStorage
+      localStorage.setItem("tasks", JSON.stringify(tasks));
+
+      // Re-render the task list
+      renderTasks(tasks);
     });
 
     // Append elements to the list item
@@ -81,7 +110,19 @@ function renderTasks() {
 function editTask(task) {
   const newTaskName = prompt("Edit your task:", task.name);
   if (newTaskName !== null && newTaskName.trim() !== "") {
+    // Get tasks from localStorage
+    const tasks = JSON.parse(localStorage.getItem("tasks"));
+
+    // Update the task's name
     task.name = newTaskName.trim();
-    renderTasks();
+
+    // Save the updated tasks back to localStorage
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+
+    // Re-render the task list
+    renderTasks(tasks);
   }
 }
+
+// Call loadTasks when the page is loaded
+window.addEventListener('load', loadTasks);
