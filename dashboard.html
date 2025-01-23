@@ -224,13 +224,13 @@
             object-fit: cover;
         }
 
-        /* Status colors */
         .priority-moderate { color: #0099ff; }
+        .priority-high { color: #ff4444; }
+        .priority-low { color: #00cc44; }
         .status-not-started { color: #ff4444; }
         .status-in-progress { color: #0099ff; }
         .status-completed { color: #00cc44; }
 
-        /* Progress circle styles */
         .progress-circles {
             background: white;
             padding: 1.5rem;
@@ -349,7 +349,7 @@
     <div class="main-container">
         <aside class="sidebar">
             <div class="user-info">
-                <img src="/api/placeholder/80/80" alt="User Avatar" class="user-avatar">
+                <img src="img/profile.png" alt="User Avatar" class="user-avatar">
                 <h3>Sundar Gurung</h3>
                 <p>sundargurung360@gmail.com</p>
             </div>
@@ -390,7 +390,7 @@
                             <span>Status: <span class="status-not-started">Not Started</span></span>
                             <span>Created on: 20/06/2023</span>
                         </div>
-                        <img src="/api/placeholder/80/60" alt="Task image" class="task-image">
+                        <img src="img/birthday.png" alt="Task image" class="task-image">
                     </div>
 
                     <div class="task-card">
@@ -402,7 +402,7 @@
                             <span>Status: <span class="status-in-progress">In Progress</span></span>
                             <span>Created on: 20/06/2023</span>
                         </div>
-                        <img src="/api/placeholder/80/60" alt="Task image" class="task-image">
+                        <img src="img/code.png" alt="Task image" class="task-image">
                     </div>
                 </div>
 
@@ -442,7 +442,7 @@
                                     </div>
                                     <div class="completed-time">Completed 2 days ago.</div>
                                 </div>
-                                <img src="/api/placeholder/60/60" alt="Completed task image" class="completed-task-image">
+                                <img src="img/dog.png" alt="Completed task image" class="completed-task-image">
                             </div>
 
                             <div class="completed-task-card">
@@ -454,7 +454,7 @@
                                     </div>
                                     <div class="completed-time">Completed 2 days ago.</div>
                                 </div>
-                                <img src="/api/placeholder/60/60" alt="Completed task image" class="completed-task-image">
+                                <img src="/img/meet.png" alt="Completed task image" class="completed-task-image">
                             </div>
                         </div>
                     </div>
@@ -464,18 +464,72 @@
     </div>
 
     <script>
-        document.querySelectorAll('.menu-item').forEach(item => {
-            item.addEventListener('click', () => {
-                document.querySelector('.menu-item.active').classList.remove('active');
-                item.classList.add('active');
-            });
-        });
+        const tasksContainer = document.querySelector(".tasks-container");
+        const taskSection = document.querySelector(".task-section"); 
+        const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+        const searchInput = document.querySelector(".search-input");
 
-        const searchInput = document.querySelector('.search-input');
-        searchInput.addEventListener('input', (e) => {
-            const searchTerm = e.target.value.toLowerCase();
-            // Add search logic here
-        });
+
+        // Load tasks to dashboard on page load
+        function loadTasksToDashboard() {
+            tasks.forEach((task) => {
+                const taskCard = document.createElement("div");
+                taskCard.classList.add("task-card");
+    
+                taskCard.innerHTML = `
+                    <div class="menu-dots">•••</div>
+                    <h3>○ ${task.name}</h3>
+                    <p>${task.description}</p>
+                    <div class="task-meta">
+                        <span>Priority: <span class="priority-${task.priority.toLowerCase()}">${task.priority}</span></span>
+                        <span>Status: <span class="status-${task.category.toLowerCase().replace(" ", "-")}">${task.category}</span></span>
+                        <span>Created on: ${task.currentDateTime}</span>
+                    </div>
+                    <img src="${task.addImg}" alt="Task image" class="task-image">
+                `;
+    
+                taskSection.appendChild(taskCard);
+            });
+        }
+
+        function searchTasks(event) {
+            const searchTerm = event.target.value.toLowerCase();  // Get the search term in lowercase
+            const filteredTasks = tasks.filter((task) =>
+                task.name.toLowerCase().includes(searchTerm) || task.description.toLowerCase().includes(searchTerm)
+        );
+        taskSection.innerHTML = "";
+        if (filteredTasks.length === 0) {
+            taskSection.innerHTML = "<p>No tasks found.</p>";
+        } else {
+            filteredTasks.forEach((task) => {
+                const taskCard = document.createElement("div");
+                taskCard.classList.add("task-card");
+
+                taskCard.innerHTML = `
+                    <div class="menu-dots">•••</div>
+                    <h3>○ ${task.name}</h3>
+                    <p>${task.description}</p>
+                    <div class="task-meta">
+                        <span>Priority: <span class="priority-${task.priority.toLowerCase()}">${task.priority}</span></span>
+                        <span>Status: <span class="status-${task.category.toLowerCase().replace(" ", "-")}">${task.category}</span></span>
+                        <span>Created on: ${task.currentDateTime}</span>
+                    </div>
+                    <img src="${task.addImg}" alt="Task image" class="task-image">
+                `;
+    
+                taskSection.appendChild(taskCard);
+            });
+        }
+    }
+
+    // Add the event listener for search input
+    searchInput.addEventListener("input", searchTasks);
+    
+        window.addEventListener("load", loadTasksToDashboard);
+
+        
     </script>
+    
+
 </body>
 </html>

@@ -175,3 +175,66 @@ h1 {
 .delete-button:hover {
   background-color: #c82333;
 }
+
+.upload-container {
+  border: 2px dashed #ddd;
+  padding: 20px;
+  text-align: center;
+  border-radius: 4px;
+}
+
+.upload-icon {
+  width: 50px;
+  height: 50px;
+  margin-bottom: 10px;
+}
+
+.browse-btn {
+  display: inline-block;
+  padding: 8px 16px;
+  background-color: #f8f9fa;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: bold;
+}
+
+.form-layout {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 20px;
+}
+
+#description {
+  width: 150%;
+  padding: 10px; 
+  font-size: 16px; 
+  border: 1px solid #ccc; 
+  border-radius: 4px; 
+  box-sizing: border-box; 
+}
+
+#imageBox {
+  max-width: 400px; 
+  max-height: 300px;
+  width: auto; 
+  height: auto; 
+  display: none; 
+  margin-top: 20px;
+}
+
+#fileInput {
+  margin-top: 20px;
+}
+
+

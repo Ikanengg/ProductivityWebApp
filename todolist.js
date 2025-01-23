@@ -1,62 +1,88 @@
 const taskInput = document.getElementById("taskInput");
 const categorySelect = document.getElementById("categorySelect");
 const prioritySelect = document.getElementById("prioritySelect");
+const description = document.getElementById("description");
 const addTaskButton = document.getElementById("addTaskButton");
 const taskList = document.getElementById("taskList");
+const fileInput = document.getElementById('fileInput');
+const imageBox = document.getElementById('imageBox');
 
-// Load tasks from localStorage or initialize with empty array
+fileInput.addEventListener('change', function (event) {
+  const file = event.target.files[0];
+
+  if (file) {
+    if (!file.type.startsWith('image/')) {
+      alert("Please upload an image file.");
+      fileInput.value = "";
+      imageBox.style.display = 'none';
+      return;
+    }
+
+    const reader = new FileReader();
+
+    reader.onload = function (e) {
+      imageBox.src = e.target.result; // Display the uploaded image
+      imageBox.style.display = 'block';
+    };
+
+    reader.readAsDataURL(file);
+  }
+});
+
+// Load tasks from localStorage or initialize with default tasks
 function loadTasks() {
   let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
 
-  // If no tasks exist, add default tasks
-  if (tasks.length === 0) {
-    const defaultTasks = [
-      { id: Date.now(), name: "Complete the project report", category: "Completed", priority: "High" },
-      { id: Date.now() + 1, name: "Start a new design mockup", category: "In Progress", priority: "Medium" }
-    ];
-    // Save default tasks to localStorage
-    localStorage.setItem("tasks", JSON.stringify(defaultTasks));
-    tasks = defaultTasks; // Set tasks to default ones
-  }
-
-  renderTasks(tasks); // Render the tasks
+  renderTasks(tasks);
 }
 
-// Event listener for adding a task
+// Add a new task
 addTaskButton.addEventListener("click", addTask);
 
 function addTask() {
   const taskText = taskInput.value.trim();
   const category = categorySelect.value;
   const priority = prioritySelect.value;
+  const descriptions = description.value.trim();
+  const file = fileInput.files[0]; // Get the uploaded file
+  const now = new Date();
+  const currentDateTime = `${String(now.getDate()).padStart(2, "0")}/${String(now.getMonth() + 1).padStart(2, "0")}/${now.getFullYear()}`;
 
   if (taskText === "") {
     alert("Please enter a task.");
     return;
   }
 
-  // Create task object
   const task = {
-    id: Date.now(), // Unique ID for the task
+    id: Date.now(),
     name: taskText,
     category,
     priority,
+    descriptions,
+    addImg: null, 
+    currentDateTime
   };
 
-  // Get tasks from localStorage, or initialize an empty array
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = function (e) {
+      task.addImg = e.target.result;
+      saveTask(task);
+    };
+    reader.readAsDataURL(file);
+  } else {
+    saveTask(task); 
+  }
+}
+
+function saveTask(task) {
   const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
-
-  // Add task to the tasks array
   tasks.push(task);
-
-  // Save updated tasks array to localStorage
   localStorage.setItem("tasks", JSON.stringify(tasks));
-
-  // Render the updated task list
   renderTasks(tasks);
-
-  // Clear the input field
-  taskInput.value = "";
+  taskInput.value = ""; // Clear the input field
+  fileInput.value = ""; // Clear the file input
+  imageBox.style.display = 'none'; // Hide the image preview
 }
 
 // Render tasks in the to-do list
@@ -82,17 +108,10 @@ function renderTasks(tasks) {
     deleteButton.textContent = "Delete";
     deleteButton.className = "delete-button";
     deleteButton.addEventListener("click", () => {
-      // Get tasks from localStorage
       const tasks = JSON.parse(localStorage.getItem("tasks"));
-
-      // Remove the task from the tasks array
       const index = tasks.findIndex((t) => t.id === task.id);
       tasks.splice(index, 1);
-
-      // Save the updated tasks back to localStorage
       localStorage.setItem("tasks", JSON.stringify(tasks));
-
-      // Re-render the task list
       renderTasks(tasks);
     });
 
@@ -110,16 +129,10 @@ function renderTasks(tasks) {
 function editTask(task) {
   const newTaskName = prompt("Edit your task:", task.name);
   if (newTaskName !== null && newTaskName.trim() !== "") {
-    // Get tasks from localStorage
     const tasks = JSON.parse(localStorage.getItem("tasks"));
-
-    // Update the task's name
-    task.name = newTaskName.trim();
-
-    // Save the updated tasks back to localStorage
+    const index = tasks.findIndex((t) => t.id === task.id);
+    tasks[index].name = newTaskName.trim();
     localStorage.setItem("tasks", JSON.stringify(tasks));
-
-    // Re-render the task list
     renderTasks(tasks);
   }
 }
